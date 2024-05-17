@@ -1,12 +1,18 @@
 // 1. IMPORTS -> NPM; MODULOS PROPIOS
+const authRouter = require("./src/api/auth/auth.router");
+const userRouter = require("./src/api/users/user.router")
+const foodRouter = require("./src/api/foods/food.router");
+const allergenRouter = require("./src/api/allergens/allergen.router");
+const emerRouter = require("./src/api/emer/emer.router");
+const nValueRouter = require("./src/api/nValue/nValue.router");
 
 const express = require("express");
 require("dotenv").config();
 const { connectMongo } = require("./src/utils/db");
-// const {
-//     notFoundHandler,
-//     errorHandler,
-// } = require("./api/middleware/error.middleware");
+const {
+    notFoundHandler,
+    errorHandler,
+} = require("./src/api/middleware/error.middleware");
 
 // 2. CONFIGURACION
 // utilizar formato json, va a permitir cierto de conexiones
@@ -30,10 +36,12 @@ app.get("/", (req, res) => {
     res.json({ message: "El servidor está funcionando" });
 });
 
-app.get("/api/auth", require('./routes/auth'));
-app.get("/api/users", require('./routes/users'));
-app.get("/api/foods", require('./routes/foods'));
-app.get("/api/allergens", require('./routes/allergens'));
+app.use("/auth", authRouter);
+app.use("/users", userRouter);
+app.use("/foods", foodRouter);
+app.use("/allergens", allergenRouter);
+app.use("/emer", emerRouter);
+app.use("/nvalue", nValueRouter);
 // 4. MANEJO EXCEPCIONES / ERRORES
 
 

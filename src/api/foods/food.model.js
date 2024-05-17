@@ -4,19 +4,19 @@ const Schema = mongoose.Schema;
 
 //2 define the model
 const foodSchema = new Schema({
-  fName: { type: String, required: true },
-  fCode: { type: String, required: true, unique: true },
-  fAllergId: [{ type: Schema.Types.ObjectId, ref: "Allergen" }],
-  fImg: { type: String },
-  fIng: [{ type: String }],
-  fNValue: [{}], //Array de strings
-  fDiet: {
+  name: { type: String, required: true },
+  code: { type: String, required: true },
+  allergId: [{ type: Schema.Types.ObjectId, ref: "Allergen" }],
+  img: [{}],
+  ing: { type: [String] },
+  nValue: [{ type: Schema.Types.ObjectId, ref: "FNValue" }],
+  diet: [{
     type: String,
     default: "",
     enum: ["vegan", "vegetarian", "cruelty free"],
-  }, //Seleccion multiple
-  fBrand: { type: String },
-  fComments: { type: String },
+  }], //Seleccion multiple
+  brand: { type: String },
+  comments: { type: String },
 });
 
 //3 convert MongoDB model into a JSON

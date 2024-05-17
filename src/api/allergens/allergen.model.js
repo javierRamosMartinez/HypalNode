@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 //2 define the model
 const allergenSchema = new Schema({
-  AName: { type: String, required: true },
+  name: { type: String, required: true },
 });
 
 //3 convert MongoDB model into a JSON

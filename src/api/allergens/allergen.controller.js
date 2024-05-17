@@ -12,32 +12,42 @@ const getAllAllergens = async (req, res, next) => {
 
 const getOneAllergen = async (req, res, next) => {
   try {
-    const allergen = await Allergen.findById(id);
+    const allergen = await Allergen.findById(req.params.id);
     res.json({ status: 200, msg: "ok", data: allergen });
   } catch (error) {
-    res.status(500).json("error getOneAllergen", error);
+    res.status(500).json(error);
+
   }
 };
 
 const addAllergen = async (req, res, next) => {
-  const AName = req.body;
   try {
-    const allergen = new Allergen({
-      AName,
+    const allergen = new Allergen(req.body)
+
+    const codeExist = await Allergen.findOne({ code: req.body.code })
+    if (codeExist) {
+      return res.status(400).json({ status: 400, message: "This allergen is already registered" });
+
+    }
+    const newAllergen = await allergen.save();
+    console.log(newAllergen);
+    return res.json({
+      status: 201,
+      message: `Allergen ${allergen.name} created`,
     });
-    await allergen.save();
-    res.json(allergen);
-  } catch (err) {
-    res.status(500).json("error addAllergen", error);
+  } catch (error) {
+    res.status(500).json({ status: 500, message: "Internal Server Error", error: error.message });
   }
 };
 
 const removeAllergen = async (req, res, next) => {
   try {
-    const id = req.params.id;
-    const allergen = await Allergen.findByIdAndDelete(id);
-    res.json({ message: "Allergen removed" });
+    const allergen = await Allergen.findByIdAndDelete(req.params.id);
+    res.json({ status: 200, msg: "ok", data: allergen });
   } catch (error) {
-    res.status(500).json("error removeFood", error);
+    res.status(500).json(error);
+
   }
 };
+
+module.exports = { getAllAllergens, getOneAllergen, addAllergen, removeAllergen }
