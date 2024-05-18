@@ -41,7 +41,7 @@ const userSchema = new Schema({
   },
   emerEmail: { type: String },
   history: [{ type: String }],
-  img: [{ type: String }],
+  img: { type: String },
   role: { type: String, default: "user", enum: ["admin", "user"] },
 });
 
