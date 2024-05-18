@@ -6,17 +6,28 @@ const Schema = mongoose.Schema;
 const foodSchema = new Schema({
   name: { type: String, required: true },
   code: { type: String, required: true },
-  allergId: [{ type: Schema.Types.ObjectId, ref: "Allergen" }],
-  img: [{}],
+  allergId: [{ type: Schema.Types.ObjectId, ref: "Allergen", required: false }],
+  img: { type: String, required: false },
   ing: { type: [String] },
-  nValue: [{ type: Schema.Types.ObjectId, ref: "FNValue" }],
-  diet: [{
-    type: String,
-    default: "",
-    enum: ["vegan", "vegetarian", "cruelty free"],
-  }], //Seleccion multiple
-  brand: { type: String },
-  comments: { type: String },
+  kcal: { type: Number, required: false },
+  fats: { type: Number, required: false },
+  satFats: { type: Number, required: false },
+  carbohydrates: { type: Number, required: false },
+  sugars: { type: Number, required: false },
+  dietaryFiber: { type: Number, required: false },
+  proteins: { type: Number, required: false },
+  salt: { type: Number, required: false },
+  weight: { type: Number, required: false },
+  diet: [
+    {
+      type: String,
+      default: "",
+      enum: ["vegan", "vegetarian", "cruelty free"],
+      required: false,
+    },
+  ], //Seleccion multiple
+  brand: { type: String, required: false },
+  comments: { type: String, required: false },
 });
 
 //3 convert MongoDB model into a JSON
