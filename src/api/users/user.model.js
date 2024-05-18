@@ -11,21 +11,35 @@ const userSchema = new Schema({
   name: { type: String, required: true, trim: true },
   mail: { type: String, required: true, trim: true },
   regDate: {
-    type: Date, default: function () {
+    type: Date,
+    default: function () {
       return removeTime(new Date());
-    }
+    },
   },
   pass: { type: String, required: true },
   allergyId: [{ type: Number }],
-  emer: [{ type: String }],
   telf: {
-    type: String, validate: {
+    type: String,
+    validate: {
       validator: function (v) {
         return v.toString().length <= 9;
       },
-      message: props => `${props.value} tiene más de 9 dígitos. El número de teléfono debe tener un máximo de 9 dígitos.`
-    }
+      message: (props) =>
+        `${props.value} is longer than 9 digits, unlike phone numbers.`,
+    },
   },
+  emerName: { type: String, required: true, trim: true },
+  emerTelf: {
+    type: String,
+    validate: {
+      validator: function (v) {
+        return v.toString().length <= 9;
+      },
+      message: (props) =>
+        `${props.value} is longer than 9 digits, unlike phone numbers.`,
+    },
+  },
+  emerEmail: { type: String },
   history: [{ type: String }],
   img: [{ type: String }],
   role: { type: String, default: "user", enum: ["admin", "user"] },
