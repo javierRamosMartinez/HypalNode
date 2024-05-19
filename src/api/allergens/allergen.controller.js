@@ -33,22 +33,56 @@ const getOneAllergen = async (req, res, next) => {
   }
 };
 const updateAllergen = async (req, res) => {
+  // try {
+  //   const allergen = await Allergen.findByIdAndUpdate(req.params.id, {
+  //     new: true,
+  //   });
+
+  //   if (!allergen) {
+  //     return res.status(404).json({ message: "Allergen not found" });
+  //   }
+
+  //   res.status(200).json({
+  //     message: "Allergen updated successfully",
+  //     data: allergen,
+  //   });
+  // } catch (error) {
+  //   console.error("Error updating allergen:", error);
+  //   res.status(500).json({ message: "Internal Server Error" });
+  // }
   try {
-    const allergen = await Allergen.findByIdAndUpdate(req.params.id, {
+    const { id } = req.params;
+    const updateFields = {};
+
+    // Extract fields from the request body
+    const { name } = req.body;
+    if (name) updateFields.name = name;
+
+    // Update image if provided
+    if (req.file) {
+      updateFields.image = req.file.path;
+    }
+
+    // Find and update the allergen
+    const allergenDb = await Allergen.findByIdAndUpdate(id, updateFields, {
       new: true,
     });
 
-    if (!allergen) {
-      return res.status(404).json({ message: "Allergen not found" });
+    // Handle if allergen is not found
+    if (!allergenDb) {
+      return next(setError(404, "Allergen not found"));
     }
 
-    res.status(200).json({
-      message: "Allergen updated successfully",
-      data: allergen,
-    });
+    // If the image has been updated, delete the old one
+    if (req.file && allergenDb.image) {
+      deleteFile(allergenDb.image);
+    }
+
+    // Send the updated allergen object in the response
+    return res.status(200).json({ updatedAllergen: allergenDb });
   } catch (error) {
-    console.error("Error updating allergen:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    // Properly handle errors
+    return next(setError(500, "Allergen patch server error"));
   }
 };
 const removeAllergen = async (req, res, next) => {
@@ -68,11 +102,31 @@ const getAllAllergens = async (req, res, next) => {
     res.status(500).json("error getAllAllergens", error);
   }
 };
+const findAllergenByName = async (req, res) => {
+  try {
+    const { name } = req.query;
+    if (!name) {
+      return res
+        .status(400)
+        .json({ message: "Name query parameter is required" });
+    }
 
+    const allergens = await Allergen.findByName(name);
+
+    if (allergens.length === 0) {
+      return res.status(404).json({ message: "No allergens found" });
+    }
+
+    return res.status(200).json(allergens);
+  } catch (error) {
+    return next(setError(500, "error findAllergenByName"));
+  }
+};
 module.exports = {
   addAllergen,
   getOneAllergen,
   updateAllergen,
   removeAllergen,
   getAllAllergens,
+  findAllergenByName,
 };
