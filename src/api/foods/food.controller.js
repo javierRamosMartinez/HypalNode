@@ -36,7 +36,7 @@ const getOneFood = async (req, res) => {
 const getByCode = async (req, res) => {
   try {
     const food = await Food.findOne({ code: req.params.code });
-    res.json({ status: 200, msg: "ok", data: food });
+    res.json({ food });
   } catch (error) {
     res.status(500).json(error);
   }
