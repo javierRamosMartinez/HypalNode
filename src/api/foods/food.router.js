@@ -6,6 +6,7 @@ const foodRouter = express.Router();
 const {
   addFood,
   getOneFood,
+  getByCode,
   updateFood,
   removeFood,
   getAllFoods,
@@ -15,6 +16,7 @@ const { isAuth } = require("../middleware/auth.middleware");
 
 foodRouter.post("/", addFood);
 foodRouter.get("/:id", getOneFood);
+foodRouter.get("/code/:code", getByCode);
 foodRouter.put("/:id", updateFood);
 foodRouter.delete("/:id", removeFood);
 foodRouter.get("/", getAllFoods);

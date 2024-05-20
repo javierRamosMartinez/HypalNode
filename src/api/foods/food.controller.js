@@ -33,6 +33,15 @@ const getOneFood = async (req, res) => {
   }
 };
 
+const getByCode = async (req, res) => {
+  try {
+    const food = await Food.findOne({ code: req.params.code });
+    res.json({ status: 200, msg: "ok", data: food });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 const updateFood = async (req, res) => {
   try {
     const food = await Food.findByIdAndUpdate(req.params.id, req.body, {
@@ -63,4 +72,11 @@ const getAllFoods = async (req, res) => {
     res.status(500).json("error getAllFoods", error);
   }
 };
-module.exports = { addFood, getOneFood, updateFood, removeFood, getAllFoods };
+module.exports = {
+  addFood,
+  getOneFood,
+  getByCode,
+  updateFood,
+  removeFood,
+  getAllFoods,
+};
