@@ -34,9 +34,13 @@ const getOneAllergen = async (req, res, next) => {
 };
 const updateAllergen = async (req, res) => {
   try {
-    const allergen = await Allergen.findByIdAndUpdate(req.params.id, {
-      new: true,
-    });
+    const updates = req.body; // Obteniendo los datos de actualización del cuerpo de la solicitud
+
+    const allergen = await Allergen.findByIdAndUpdate(
+      req.params.id,
+      updates,
+      { new: true }
+    );
 
     if (!allergen) {
       return res.status(404).json({ message: "Allergen not found" });
@@ -69,10 +73,32 @@ const getAllAllergens = async (req, res, next) => {
   }
 };
 
+const findByName = async (req, res) => {
+  try {
+    const nameToFind = req.params.name;
+    const allergensFinded = await Allergen.find({
+      name: { $regex: nameToFind, $options: 'i' }
+    });
+    console.log(allergensFinded);
+    if (allergensFinded.length === 0) {
+      return res.status(404).json({ status: 404, message: "No allergens found with the specified name" });
+    }
+
+    res.json({
+      // status: 200,
+      // message: "Allergens found",
+      data: allergensFinded
+    });
+  } catch (error) {
+    res.status(500).json({ message: "error findByName", error: error.message });
+  }
+};
+
 module.exports = {
   addAllergen,
   getOneAllergen,
   updateAllergen,
   removeAllergen,
   getAllAllergens,
+  findByName,
 };

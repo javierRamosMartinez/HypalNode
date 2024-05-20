@@ -9,6 +9,7 @@ const {
   updateAllergen,
   removeAllergen,
   getAllAllergens,
+  findByName,
 } = require("./allergen.controller");
 //check auth in middleware
 const { isAuth } = require("../middleware/auth.middleware");
@@ -18,5 +19,6 @@ allergenRouter.get("/:id", getOneAllergen);
 allergenRouter.put("/:id", updateAllergen);
 allergenRouter.delete("/:id", removeAllergen);
 allergenRouter.get("/", getAllAllergens);
+allergenRouter.get('/search/:name', findByName);
 
 module.exports = allergenRouter;
