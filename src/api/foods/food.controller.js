@@ -32,17 +32,18 @@ const getOneFood = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
 const updateFood = async (req, res) => {
   try {
     const food = await Food.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-
     res.json({ status: 200, msg: "ok", data: food });
   } catch (error) {
     res.status(500).json(error);
   }
 };
+
 const removeFood = async (req, res) => {
   try {
     const food = await Food.findByIdAndDelete(req.params.id, req.body, {
