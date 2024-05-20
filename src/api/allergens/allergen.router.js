@@ -5,6 +5,7 @@ const allergenRouter = express.Router();
 //link to the controller
 const {
   addAllergen,
+  addManyAllergens,
   getOneAllergen,
   updateAllergen,
   removeAllergen,
@@ -15,6 +16,7 @@ const {
 const { isAuth } = require("../middleware/auth.middleware");
 
 allergenRouter.post("/", addAllergen);
+allergenRouter.post("/many", addManyAllergens);
 allergenRouter.get("/:id", getOneAllergen);
 allergenRouter.put("/:id", updateAllergen);
 allergenRouter.delete("/:id", removeAllergen);
