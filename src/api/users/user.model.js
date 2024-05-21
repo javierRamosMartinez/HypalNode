@@ -17,7 +17,7 @@ const userSchema = new Schema({
     },
   },
   pass: { type: String, required: true },
-  allergyId: [{ type: Number }],
+  allergyId: [{ type: Schema.Types.ObjectId, ref: "Allergen" }],
   telf: {
     type: String,
     validate: {
