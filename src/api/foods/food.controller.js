@@ -35,20 +35,11 @@ const getOneFood = async (req, res) => {
 
 const getByCode = async (req, res) => {
   try {
-    const jwt_decode = require("jwt-decode");
-
-    //desencriptar token para acceder al usuario
-    let decoded = jwt_decode(data.token); // data.token is the JWT token you received
-    const userId = decoded.id;
-    let user = await strapi.plugins["users-permissions"].services.user.fetch({
-      id: userId,
-    });
+    // Get the user's information from local storage
     const food = await Food.findOne({ code: req.params.code });
-    res.json({ food });
-    //comparar si el allergyId del usuario coincide con el id del producto
-    //hacer un for the los alergenos del usuario con un includes
 
     //retornas el producto con los alergenos q coinciden entre el usuario y el producto
+    res.json({ food });
   } catch (error) {
     res.status(500).json(error);
   }

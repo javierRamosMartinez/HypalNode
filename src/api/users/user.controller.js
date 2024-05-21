@@ -42,4 +42,34 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = { getAll, getOne, updateUser };
+const updateUserPatch = async (req, res) => {
+  try {
+    // Encuentra al usuario por su ID
+    const user = await User.findById(req.params.id, req.body);
+    if (!user) {
+      return res.status(404).json({ status: 404, msg: "User not found" });
+    }
+
+    // Obtén los allergyId existentes del usuario
+    const existingAllergyIds = user.allergyId || [];
+
+    // Obtén los nuevos allergyId del cuerpo de la solicitud
+    const newAllergyIds = req.body.allergyId || [];
+
+    // Fusiona los arrays y elimina duplicados
+    const updatedAllergyIds = [
+      ...new Set([...existingAllergyIds, ...newAllergyIds]),
+    ];
+
+    // Actualiza el usuario con los nuevos allergyId
+    user.allergyId = updatedAllergyIds;
+
+    // Guarda el usuario actualizado
+    await user.save();
+
+    res.json({ status: 200, msg: "ok", data: user });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+module.exports = { getAll, getOne, updateUser, updateUserPatch };

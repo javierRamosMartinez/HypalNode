@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const User = require("../users/user.model")
+const User = require("../users/user.model");
 
 const register = async (req, res, next) => {
   try {
@@ -20,8 +20,8 @@ const register = async (req, res, next) => {
     });
   } catch (error) {
     // specify the error and location
-    console.log(error)
-    return ("error at register user", error);
+    console.log(error);
+    return "error at register user", error;
   }
 };
 
@@ -41,7 +41,7 @@ const login = async (req, res) => {
       );
 
       return res.status(200).json({
-        data: { massage: "ok", user: userInfo, token: token },
+        data: { message: "ok", user: userInfo, token: token },
       });
     } else {
       return res.json({
@@ -51,10 +51,8 @@ const login = async (req, res) => {
       });
     }
   } catch (error) {
-    return ("error at login user", error);
+    return "error at login user", error;
   }
 };
-
-
 
 module.exports = { register, login };
