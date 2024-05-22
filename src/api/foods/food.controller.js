@@ -36,7 +36,7 @@ const getOneFood = async (req, res) => {
 const getByCode = async (req, res) => {
   try {
     // Get the user's information from local storage
-    const food = await Food.findOne({ code: req.params.code });
+    const food = await Food.findOne({ code: req.params.code }).populate("allergId");
 
     //retornas el producto con los alergenos q coinciden entre el usuario y el producto
     res.json({ food });
